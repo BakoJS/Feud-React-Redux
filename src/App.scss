@@ -1,0 +1,257 @@
+/* .App {
+  text-align: center;
+}
+
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+ */
+
+ // colors
+$red: #ed0a05;
+$orange: #ed4506;
+$green: #156e21;
+$darkBlue: #141646;
+
+@import url("https://fonts.googleapis.com/css?family=Questrial");
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box;
+}
+html {
+  box-sizing: inherit;
+}
+body {
+  
+  background: #000;
+    background-image: linear-gradient(90deg, darken($darkBlue, 20%), $darkBlue);
+
+  font-family: "Questrial", sans-serif;
+  color: white;
+}
+
+a,a:visited,a:hover{
+  color: #faa;
+}
+
+.container {
+width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  color: #fff;
+}
+
+.innerWrapper {
+  overflow: hidden;
+  max-width: 40em;
+}
+
+#quiz {
+  overflow: hidden;
+}
+
+.questionView {
+  position: relative;
+  padding: 1em;
+}
+
+.questionView__question {
+  line-height: 1.4;
+}
+
+// animations modified from https://github.com/daneden/animate.css/blob/master/animate.css
+
+.--slideInLeft {
+  animation-duration: 0.5s;
+  animation-name: slideInLeft;
+  animation-timing-function: cubic-bezier(0.15, 0, 0.54, 1.34);
+}
+
+@keyframes slideInLeft {
+  from {
+    transform: translate3d(-100%, 0, 0);
+    visibility: visible;
+    opacity: 0;
+  }
+  75% {
+    opacity: 25%;
+  }
+
+  to {
+    transform: translate3d(0, 0, 0);
+    opacity: 1;
+  }
+}
+
+@keyframes shake {
+  from,
+  to {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+  }
+
+  10%,
+  90% {
+    -webkit-transform: translate3d(-10px, 0, 0);
+    transform: translate3d(-10px, 0, 0);
+  }
+
+  60% {
+    -webkit-transform: translate3d(10px, 0, 0);
+    transform: translate3d(10px, 0, 0);
+  }
+}
+
+.shake {
+  -webkit-animation-name: shake;
+  animation-name: shake;
+  animation-duration: 0.25s;
+  animation-fill-mode: forward;
+  animation-timing-function: cubic-bezier(0.15, 0, 0.54, 1.34);
+}
+
+.choices {
+  display: block;
+  position: relative;
+  font-size: 120%;
+  line-height: 1.5;
+  margin: 0.5em;
+  user-select: none;
+  background: rgba(0, 0, 0, 0.25);
+  border-radius: 25% 0 0 25%;
+  display: flex;
+  align-items: center;
+  padding: 0.5em 0;
+
+  &__choice {
+    opacity: 0;
+    cursor: pointer;
+    position: relative;
+    z-index: 10;
+    transform: scale(3);
+    top: -0.25em;
+    padding: 1em;
+
+    &:checked ~ .choices__label {
+      @extend .shake;
+    }
+
+    &:focus ~ .choices__checkmark {
+      background: compliment($orange);
+    }
+
+    &:focus ~ .choices__label {
+      text-decoration: underline;
+      transform: scale(1.2);
+    }
+
+    &:checked ~ .choices__checkmark {
+      background: $orange;
+
+      .--correct & {
+        background: $green;
+      }
+
+      .--incorrect & {
+        background: $red;
+      }
+    }
+    &:disabled,
+    &:disabled ~ .choices__label {
+      cursor: not-allowed;
+    }
+  }
+
+  &__checkmark {
+    position: absolute;
+    height: 1.5em;
+    width: 1.5em;
+    background-color: #eee;
+    transition: background 0.25s cubic-bezier(0.15, 0, 0.54, 1.34);
+
+    .--radio & {
+      border-radius: 50%;
+    }
+  }
+  &__label {
+    padding-left: 2em;
+    cursor: pointer;
+    .--correct & {
+      color: $green;
+    }
+    .--incorrect & {
+      color: $red;
+    }
+  }
+}
+
+.buttonGroup {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+.btn {
+  width: 95%;
+  margin: 0.5em 0;
+}
+
+.btn button {
+  width: 100%;
+  background: $darkBlue;
+  text-transform: uppercase;
+  font-size: 1.2em;
+  color: #fff;
+  padding: 0.5em 0;
+  cursor: pointer;
+  border-radius: 20px;
+  
+  &:hover, &:focus {
+    text-decoration: underline;
+  }
+}
+
+.quizCompletedView__score{
+  text-align: center;  
+  
+  &--high span{
+    color: $green;
+
+  }
+  &--low span{
+    color: $red;
+  }
+}
+
+footer{ z-index: 100; bottom: 0; color: white; text-align: center; width: 100%;}

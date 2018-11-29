@@ -57,52 +57,7 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js' to im
 ### Getting Started:
 
 - App.js is where all of the components will be displayed.
-- Create a store.js that includes middleware and a connection to Redux Dev Tools and Local Storage
-
-	import { createStore, applyMiddleware, compose } from "redux";
-	import thunk from "redux-thunk";
-	import allReducers from "./reducers";
-	
-	const middleware = [thunk];
-	const composeEnhancers =
-	  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-	
-	
-	function saveToLocalStorage(state) {
-	  try {
-	    const serializedState = JSON.stringify(state);
-	    localStorage.setItem("state", serializedState);
-	  } catch (e) {
-	    console.log(e);
-	  }
-	}
-	
-	function loadFromLocalStorage() {
-	  try {
-	    const serializedState = localStorage.getItem("state");
-	    if (serializedState === null) return undefined;
-	    return JSON.parse(serializedState);
-	  } catch (e) {
-	    console.log(e);
-	    return undefined;
-	  }
-	}
-	
-	const persistedState = loadFromLocalStorage();
-	
-	const store = createStore(
-	  allReducers, persistedState,
-	  compose(
-	    composeEnhancers,
-	    applyMiddleware(...middleware)
-	  )
-	);
-	
-	store.subscribe(() => saveToLocalStorage(store.getState()));
-	
-	export default store;
-
-
+- Create a store.js that includes middleware and a connection to Redux Dev Tools and Local Storage <br>
 
 - Link the Provider from Redux onto App.js as well as link to the store that was created.
 
@@ -112,9 +67,7 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js' to im
 	import store from "./store";
 	import SelectView from "./containers/selectView";
 	
-	class App extends Component {
-	  
-	
+    class App extends Component { 
 	  render() {
 	    return (
 	      <Provider store={store}>
@@ -125,21 +78,56 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js' to im
 	    );
 	  }
 	}
-	
-	export default App;
+    export default App;
 
 - The `Select View` component is the only component that will be exported to App.js.
 
 
 ### Create the Actions
--	Types 
-o	There are nine action creators holding actions for the reducer “reducerQuiz” to listen for. 
--	Index
-o	Export the actions
 
-Create the Reducers
--	Combine All Reducers
-o	Create a function that combines all reducers which will be exported to store.js
+##### Types 
+- There are nine action creators holding actions for the reducer “reducerQuiz” to listen for. 
+
+##### Index
+- Export the actions
+
+### Create the Reducers
+
+##### Combine All Reducers
+
+- Create a function that combines all reducers which will be exported to store.js
+
+    import {combineReducers} from "redux";
+    import reducerQuestions from "./reducerQuestions";
+    import reducerQuiz from "./reducerQuiz";
+
+    const allReducers = combineReducers({
+        questions: reducerQuestions,
+        quiz: reducerQuiz
+    });
+
+    export default allReducers;
+
+##### Questions reducer
+
+- This contains an array of objects that contain a question along with its answers and whether or not that answer is correct or not.
+
+##### Quiz reducer
+
+- Listens for the actions, and then changes the initial state.
+- Create an initial state
+
+    const initHistory = {
+    correct: 0, 
+    attempts: 0,
+    answers: {},
+    reviewing: false,
+    index: 0
+    };
+
+- This will track how many questions the user answered correctly,  how many times the user has attempted the quiz, logs the answers, whether or not the is reviewing their past answers, how far along in the quiz the user is
+- Constant `initHistory` will be stored as the initial state in this reducer
+
 
 
 

@@ -5,15 +5,15 @@ import QuizCompleteView from "./quizCompleteView";
 import ButtonGroupView from "./buttonGroupView";
 
 class SelectView extends Component {
-  getCurrentIndex() {
+  getCurrentIndex =()=> {
     return this.props.quiz.index || 0;
   }
 
-  getAnswers() {
+  getAnswers =()=> {
     return Object.values(this.props.quiz.answers);
   }
 
-  quizComplete() {
+  quizComplete=()=> {
     return (
       this.getCurrentIndex() === 0 &&
       this.getAnswers().length === this.props.questions.length

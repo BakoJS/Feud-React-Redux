@@ -10,23 +10,23 @@ import {
 } from "../actions";
 
 class QuestionView extends Component {
-  getCurrentIndex() {
+  getCurrentIndex=()=> {
     return this.props.quiz.index || 0;
   }
 
-  getAnswers() {
+  getAnswers=()=> {
     return Object.values(this.props.quiz.answers);
   }
 
-  getCurrentQuestion() {
+  getCurrentQuestion=()=> {
     return this.props.questions[this.getCurrentIndex()];
   }
 
-  reviewing() {
+  reviewing=()=> {
     return this.props.quiz.reviewing;
   }
 
-  multiselect() {
+  multiselect=()=> {
     //might have something wrong
     return (
       this.getCurrentQuestion()
@@ -62,7 +62,7 @@ class QuestionView extends Component {
   };
 
   //Trying to fix the code
-  choicesHtmll() {
+  choicesHtmll=()=> {
     const currentQuestion = this.getCurrentQuestion()
       .choices.map(choice => {
         const inputType = this.multiselect() ? "checkbox" : "radio";

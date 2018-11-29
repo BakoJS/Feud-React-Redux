@@ -4,7 +4,7 @@ import ResetButton from "../components/resetButton";
 import ReviewButton from "../components/reviewButton";
 
 class QuizCompleteView extends Component {
-  getCurrentScore() {
+  getCurrentScore = () => {
     return (this.props.quiz.correct > 0
       ? (this.props.quiz.correct / this.props.quiz.attempts) * 100
       : 0

@@ -59,48 +59,49 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js' to im
 - App.js is where all of the components will be displayed.
 - Create a store.js that includes middleware and a connection to Redux Dev Tools and Local Storage
 
-    import { createStore, applyMiddleware, compose } from "redux";
-    import thunk from "redux-thunk";
-    import allReducers from "./reducers";
+	import { createStore, applyMiddleware, compose } from "redux";
+	import thunk from "redux-thunk";
+	import allReducers from "./reducers";
+	
+	const middleware = [thunk];
+	const composeEnhancers =
+	  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
+	
+	
+	function saveToLocalStorage(state) {
+	  try {
+	    const serializedState = JSON.stringify(state);
+	    localStorage.setItem("state", serializedState);
+	  } catch (e) {
+	    console.log(e);
+	  }
+	}
+	
+	function loadFromLocalStorage() {
+	  try {
+	    const serializedState = localStorage.getItem("state");
+	    if (serializedState === null) return undefined;
+	    return JSON.parse(serializedState);
+	  } catch (e) {
+	    console.log(e);
+	    return undefined;
+	  }
+	}
+	
+	const persistedState = loadFromLocalStorage();
+	
+	const store = createStore(
+	  allReducers, persistedState,
+	  compose(
+	    composeEnhancers,
+	    applyMiddleware(...middleware)
+	  )
+	);
+	
+	store.subscribe(() => saveToLocalStorage(store.getState()));
+	
+	export default store;
 
-    const middleware = [thunk];
-    const composeEnhancers =
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__();
-
-
-    function saveToLocalStorage(state) {
-        try {
-        const serializedState = JSON.stringify(state);
-        localStorage.setItem("state", serializedState);
-        } catch (e) {
-        console.log(e);
-        }
-    }
-
-    function loadFromLocalStorage() {
-        try {
-        const serializedState = localStorage.getItem("state");
-        if (serializedState === null) return undefined;
-        return JSON.parse(serializedState);
-        } catch (e) {
-        console.log(e);
-        return undefined;
-        }
-    }
-
-    const persistedState = loadFromLocalStorage();
-
-    const store = createStore(
-        allReducers, persistedState,
-        compose(
-        composeEnhancers,
-        applyMiddleware(...middleware)
-        )
-    );
-
-    store.subscribe(() => saveToLocalStorage(store.getState()));
-
-    export default store;
 
 
 - Link the Provider from Redux onto App.js as well as link to the store that was created.

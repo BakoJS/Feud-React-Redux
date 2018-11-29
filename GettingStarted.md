@@ -4,22 +4,22 @@ This is a programming quiz written in React and Redux. The user is given a quest
 
 # SCREENSHOTS
 
-###Question View:
+### Question View:
  
  ![Question View]("images/Question View of Quiz.PNG")
 
-###Score Display: 
+### Score Display: 
  ![Score Display]("images/Score Display of Quiz.PNG")
 
 
-#TECH/FRAMEWORK USED
+# TECH/FRAMEWORK USED
 
 - ReactJS
 - Redux JS
 - Sass
 
 
-#CODE EXAMPLE
+# CODE EXAMPLE
 
 How the score is calculated once the quiz is over: 
 
@@ -31,15 +31,15 @@ How the score is calculated once the quiz is over:
     }
 
 
-#INSTALLATION
+# INSTALLATION
 
-###Create React App:
+### Create React App:
 
     npx create-react-app my-app   
     cd my-app
     npm start
 
-###Sass Installation:
+### Sass Installation:
 
 To use Sass, first install node-sass:
 
@@ -49,12 +49,12 @@ To use Sass, first install node-sass:
 
 Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js' to import 'src/App.scss`.
 
-###Redux installation: 
+### Redux installation: 
 `npm i redux react-redux redux-thunk`
 
-#HOW TO USE?
+# HOW TO USE?
 
-###Getting Started:
+### Getting Started:
 
 - App.js is where all of the components will be displayed.
 - Create a store.js that includes middleware and a connection to Redux Dev Tools and Local Storage
@@ -128,5 +128,17 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js' to im
 	export default App;
 
 - The `Select View` component is the only component that will be exported to App.js.
+
+
+### Create the Actions
+-	Types 
+o	There are nine action creators holding actions for the reducer “reducerQuiz” to listen for. 
+-	Index
+o	Export the actions
+
+Create the Reducers
+-	Combine All Reducers
+o	Create a function that combines all reducers which will be exported to store.js
+
 
 

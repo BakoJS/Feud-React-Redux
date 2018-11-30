@@ -22,12 +22,12 @@ This is a programming quiz written in React and Redux. The user is given a quest
 How the score is calculated once the quiz is over: 
 
 ```
-    getCurrentScore() {
-        return (this.props.quiz.correct > 0
-        ? (this.props.quiz.correct / this.props.quiz.attempts) * 100
-        : 0
-        ).toFixed();
-    }
+getCurrentScore() {
+    return (this.props.quiz.correct > 0
+    ? (this.props.quiz.correct / this.props.quiz.attempts) * 100
+    : 0
+    ).toFixed();
+}
 ```
 
 
@@ -62,18 +62,18 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js` to im
 - Link the Provider from Redux onto App.js as well as link to the store that was created.
 	
 ```
-    class App extends Component { 
-	  render() {
-	    return (
-	      <Provider store={store}>
-	        <div className="App"> 
-	          <SelectView />
-	        </div>
-	      </Provider>
-	    );
-	  }
-	}
-    export default App;
+class App extends Component { 
+  render() {
+    return (
+      <Provider store={store}>
+        <div className="App"> 
+          <SelectView />
+        </div>
+      </Provider>
+    );
+  }
+}
+export default App;
 ```
 
 - The `Select View` component is the only component that will be exported to App.js.
@@ -94,16 +94,16 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js` to im
 - Create a function that combines all reducers which will be exported to store.js
 
 ```
-    import {combineReducers} from "redux";
-    import reducerQuestions from "./reducerQuestions";
-    import reducerQuiz from "./reducerQuiz";
+import {combineReducers} from "redux";
+import reducerQuestions from "./reducerQuestions";
+import reducerQuiz from "./reducerQuiz";
 
-    const allReducers = combineReducers({
-        questions: reducerQuestions,
-        quiz: reducerQuiz
-    });
+const allReducers = combineReducers({
+    questions: reducerQuestions,
+    quiz: reducerQuiz
+});
 
-    export default allReducers;
+export default allReducers;
 ```
 
 #### Questions reducer
@@ -116,34 +116,34 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js` to im
 - Create an initial state
 
 ```
-    const initHistory = {
-    correct: 0, 
-    attempts: 0,
-    answers: {},
-    reviewing: false,
-    index: 0
-    };
+const initHistory = {
+  correct: 0, 
+  attempts: 0,
+  answers: {},
+  reviewing: false,
+  index: 0
+};
 ```
 
 - This will track how many questions the user answered correctly,  how many times the user has attempted the quiz, logs the answers, whether or not the is reviewing their past answers, how far along in the quiz the user is
 - Constant `initHistory` will be stored as the initial state in this reducer
 
 ```
-    render() {
-        if (this.props.quiz.reviewing) {
-        return (
-            <div className="btn">
-            <button onClick={this.next}>Next</button>
-            </div>
-        );
-        }
-        return (
+render() {
+    if (this.props.quiz.reviewing) {
+    return (
         <div className="btn">
-            <button onClick={this.formSubmitHandler}>Next</button>
+        <button onClick={this.next}>Next</button>
         </div>
-        );
+    );
     }
-    }
+    return (
+    <div className="btn">
+        <button onClick={this.formSubmitHandler}>Next</button>
+    </div>
+    );
+}
+    
 ```
      
     
@@ -151,17 +151,17 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js` to im
 - formSubmitHandler
 
 ```
-    formSubmitHandler = e => {
-        e.preventDefault();
-        const name = `question-${this.getCurrentIndex()}`;
-        const answers = Array.from(document.forms[0].elements[name])
-        .map(choice => {
-            if (choice.checked) return choice.value;
-        }) 
-        .filter(answer => answer);
-        this.answer(this.getCurrentIndex(), answers);
-        this.save(); // save answer to localStorage
-    }; 
+formSubmitHandler = e => {
+    e.preventDefault();
+    const name = `question-${this.getCurrentIndex()}`;
+    const answers = Array.from(document.forms[0].elements[name])
+    .map(choice => {
+        if (choice.checked) return choice.value;
+    }) 
+    .filter(answer => answer);
+    this.answer(this.getCurrentIndex(), answers);
+    this.save(); // save answer to localStorage
+}; 
 ```
 - When the user clicks on the check box that represents the answer that he or she has chosen, then clicks “next” this function, the “formSubmitHandler” function is called. 
 - `const name` is inputted into `Array.from(document.forms[0].elements[name])` function. This function retrieves the choices correlated to a specific question from the form submitted. 
@@ -169,34 +169,35 @@ Now you can rename `src/App.css` to `src/App.scss` and update `src/App.js` to im
 - The `this.getCurrentIndex()` function corresponds to the current index of the question given. That is passed as a parameter to the `answer` function as well.
 - `Answer` function
 
-    ```answer = (id, answer) => {
-        const correct =
-        this.props.questions[id].choices
-        .filter(choice => choice.correct)
-        .map(correctAnswer => correctAnswer.answer)
-        .toString().trim() === answer.toString().trim();
-        if (correct) {
-        this.props.increaseCorrect();
-        }
-        this.props.increaseAttempts();
-        this.props.storeAnswer(id, answer);
-        this.next();
-    };
-    ```
+```
+answer = (id, answer) => {
+    const correct =
+    this.props.questions[id].choices
+    .filter(choice => choice.correct)
+    .map(correctAnswer => correctAnswer.answer)
+    .toString().trim() === answer.toString().trim();
+    if (correct) {
+    this.props.increaseCorrect();
+    }
+    this.props.increaseAttempts();
+    this.props.storeAnswer(id, answer);
+    this.next();
+};
+```
 
- - The answer function takes in the parameters of `id` and `answer`
+- The answer function takes in the parameters of `id` and `answer`
 - `const correct` takes the choices that corresponds to the current question in the `reducerQuestions` reducer. It then filters for the choice that has `correct` marked true, then compares that choice to the answer that the user picked. If those two things match, then the action creator `increase Correct` is called to increase the number of correct answers by one. Also, the number of attempts is increased and the answer is stored in the store. Finally the `next` function is called to go to the next question. 
 - Next Function
 
 ```
 next=()=> {
-    if (this.getCurrentIndex() < this.props.questions.length - 1) {
-      this.props.increaseIndex();
-    } else {
-      // else reset index to 0
-      this.props.setIndex(0);
-    }
+  if (this.getCurrentIndex() < this.props.questions.length - 1) {
+    this.props.increaseIndex();
+  } else {
+    // else reset index to 0
+    this.props.setIndex(0);
   }
+}
 ```
 
 - If the current index of the question is less than the length of the questions minus 1, then increase the index.  If this condition is no longer met, then set the index back to 0. Essential this will take the quiz to the next question, or start it all over again. 
@@ -206,8 +207,8 @@ next=()=> {
 
 ```
 <div className="btn">
-        <button onClick={this.handleClick}>Reset</button>
-      </div>
+  <button onClick={this.handleClick}>Reset</button>
+</div>
 ```
 - This button handles an on click event called `handleClick`
 
@@ -215,7 +216,7 @@ next=()=> {
 handleClick = () => {
     this.props.resetState();
     this.props.setReviewingFalse();
-  }
+}
 ```
 - The action creators `resetState` and `setReviewingFalse` are called. The reset state action creator changes the state of the `reducerQuiz` reducer  back to its initial state which is called `initHistory`
 - The set reviewing false action creator sets the property of `reviewing` in the `reducerQuiz` reducer back to `false`.
@@ -223,8 +224,8 @@ handleClick = () => {
 
 ```
 <div className="btn">
-        <button onClick={this.handleClick}>Review</button>
-      </div>
+  <button onClick={this.handleClick}>Review</button>
+</div>
 ```
 
 - Handle Click function for the review button
@@ -249,15 +250,15 @@ handleClick = () => {
 
 ```
 <div>
-        <div className="questionView --slideInLeft">
-          <h2 className="questionView__question">
-            {this.getCurrentQuestion().question}
-          </h2>
-          <form id="answers" onSubmit={this.formSubmitHandler}>
-            {this.choicesHtmll()}
-          </form>
-        </div>
-      </div>
+    <div className="questionView --slideInLeft">
+      <h2 className="questionView__question">
+        {this.getCurrentQuestion().question}
+      </h2>
+      <form id="answers" onSubmit={this.formSubmitHandler}>
+        {this.choicesHtmll()}
+      </form>
+    </div>
+</div>
 ```
 
 - The questions are displayed with the function `this.getCurrentQuestion` function.
@@ -390,7 +391,7 @@ quizComplete=()=> {
   }
 ```
 
-- This function returns true only if the current index is equal to zero and the length of the answers, which is stored in the “reducerQuiz” reducer, the user selected is equal to the length of the questions.
+- This function returns true only if the current index is equal to zero and the length of the answers, which is stored in the `reducerQuiz` reducer, the user selected is equal to the length of the questions.
 
 
 # CREDITS

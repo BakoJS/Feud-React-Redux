@@ -6,10 +6,10 @@ This is a programming quiz written in React and Redux. The user is given a quest
 
 ### Question View:
  
- ![Question View](../images/Question View of Quiz.PNG)
+ ![Question View](/src/images/Question View of Quiz.PNG)
 
 ### Score Display: 
- ![Score Display](../images/Score Display of Quiz.PNG)
+ ![Score Display](/src/images/Score Display of Quiz.PNG)
 
 
 # TECH/FRAMEWORK USED

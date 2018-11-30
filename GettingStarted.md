@@ -5,14 +5,10 @@ This is a programming quiz written in React and Redux. The user is given a quest
 # SCREENSHOTS
 
 ### Question View:
- 
- ![](/src/images/Question View of Quiz.png)
-
-### Score Display: 
- ![](/src/images/Score Display of Quiz.png)
-
  <img src="src/images/Question View of Quiz.PNG" style="width: 200px;">
 
+### Score Display: 
+ <img src="src/images/Score Display of Quiz.PNG" style="width: 200px;">
 
 # TECH/FRAMEWORK USED
 
